@@ -1,6 +1,7 @@
 ---
 title: Удон с курицей и овощами
 slug: chicken-udon
+image: /images/chicken-udon.webp
 category: Основные блюда
 description: Лапша в азиатском стиле с сочной курицей, яркими овощами и имбирным соусом.
 time: 30 минут

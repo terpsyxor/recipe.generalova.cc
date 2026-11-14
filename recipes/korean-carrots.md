@@ -1,6 +1,7 @@
 ---
 title: Морковь по-корейски
 slug: korean-carrots
+image: /images/korean-carrots.webp
 category: Салаты
 description: Хрустящая морковь с кориандром, чесноком и лёгкой остротой.
 time: 25 минут + 3 часа в холодильнике

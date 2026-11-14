@@ -1,6 +1,7 @@
 ---
 title: Розовое облако
 slug: pink-cloud
+image: /images/pink-cloud.webp
 category: Десерты
 description: Нежный ванильный торт с клубникой, малиной и воздушным сливочным кремом.
 time: Около 1,5 часа + охлаждение

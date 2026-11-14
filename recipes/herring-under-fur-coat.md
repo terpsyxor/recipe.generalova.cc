@@ -1,6 +1,7 @@
 ---
 title: Селёдка под шубой
 slug: herring-under-fur-coat
+image: /images/herring-under-fur-coat.webp
 category: Салаты
 description: Любимый слоёный салат со свёклой, нежными овощами и селёдкой.
 time: 1,5 часа + 4 часа в холодильнике
