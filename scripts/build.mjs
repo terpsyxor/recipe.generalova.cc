@@ -1,3 +1,4 @@
+import {languages, translations} from './i18n.mjs';
 import {readFile, readdir, mkdir, rm, writeFile, cp} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
@@ -28,20 +29,44 @@ export function parse(source, filename) {
 }
 export async function build(){
  const files=(await readdir(path.join(root,'recipes'))).filter(f=>f.endsWith('.md')).sort();
- const recipes=await Promise.all(files.map(async f=>parse(await readFile(path.join(root,'recipes',f),'utf8'),f)));
- if(new Set(recipes.map(r=>r.slug)).size!==recipes.length)throw new Error('Duplicate recipe slug');
+ const all={};
+ for(const lang of Object.keys(languages)){
+  const dir=path.join(root,'recipes',lang==='ru'?'':lang);
+  all[lang]=await Promise.all(files.map(async f=>parse(await readFile(path.join(dir,f),'utf8'),`${lang}/${f}`)));
+  if(new Set(all[lang].map(r=>r.slug)).size!==files.length)throw new Error('Duplicate recipe slug');
+  if(lang!=='ru')for(let i=0;i<files.length;i++)if(all[lang][i].slug!==all.ru[i].slug)throw new Error(`Translation slug mismatch: ${lang}/${files[i]}`);
+ }
  const layout=await readFile(path.join(root,'templates/layout.html'),'utf8');
- const render=(title,description,url,content)=>layout.replace(/{{(title|description|url|content)}}/g,(_,k)=>k==='content'?content:escape({title,description,url}[k]));
  await rm(out,{recursive:true,force:true});await mkdir(out,{recursive:true});await cp(path.join(root,'public'),out,{recursive:true});
- const photo = r => r.image ? `<img src="${escape(r.image)}" alt="${escape(r.title)} — вариант подачи" width="1536" height="1024" loading="lazy" decoding="async">` : ''; 
- const cards=recipes.map((r,i)=>`<a class="card tone-${i%4}" href="/recipes/${r.slug}/" data-category="${escape(r.category)}" data-search="${escape(r.title+' '+r.description)}"><div class="card-art">${photo(r)}</div><div class="card-body"><span class="eyebrow">${escape(r.category)}</span><h3>${escape(r.title)}</h3><p>${escape(r.description)}</p><div class="card-meta"><span>${escape(r.time)}</span><span>Читать рецепт ↗</span></div></div></a>`).join('');
+ const urls=[];
+ for(const [lang,config] of Object.entries(languages)){
+ const t=translations[lang],recipes=all[lang],base=config.prefix,home=base+'/';
+ const lines=s=>escape(s).replace(/\|/g,'<br>');
+ const route=(l,slug)=>languages[l].prefix+(slug?`/recipes/${slug}/`:'/');
+ const render=(title,description,slug,content,is404=false)=>{
+  const current=is404?base+'/404.html':route(lang,slug);
+  const switcher=`<nav class="language-switch" aria-label="${escape(t.language)}">${Object.entries(languages).map(([l,c])=>`<a href="${route(l,slug)}" lang="${c.tag}" hreflang="${c.tag}" title="${c.label}" aria-label="${c.label}"${l===lang?' aria-current="page"':''}>${l.toUpperCase()}</a>`).join('')}</nav>`;
+  const alternates=is404?'<meta name="robots" content="noindex">':Object.entries(languages).map(([l,c])=>`<link rel="alternate" hreflang="${c.tag}" href="${escape(site+route(l,slug))}">`).join('')+`<link rel="alternate" hreflang="x-default" href="${escape(site+route('ru',slug))}">`;
+  const data={...t,title,description,url:site+current,lang:config.tag,locale:config.locale,home,brandPlain:t.brand.replace('|',' '),brand:lines(t.brand),switcher,alternates,content};
+  const raw=new Set(['brand','switcher','alternates','content']);
+  return layout.replace(/{{(\w+)}}/g,(_,k)=>{if(!(k in data))throw new Error('Unknown template key '+k);return raw.has(k)?data[k]:escape(data[k]);});
+ };
+ const save=async(rel,html)=>{const dest=path.join(out,rel);await mkdir(path.dirname(dest),{recursive:true});await writeFile(dest,html);};
+ const photo=r=>r.image?`<img src="${escape(r.image)}" alt="${escape(r.title+' — '+t.serving)}" width="1536" height="1024" loading="lazy" decoding="async">`:'';
+ const cards=recipes.map((r,i)=>`<a class="card tone-${i%4}" href="${route(lang,r.slug)}" data-category="${escape(r.category)}" data-search="${escape(r.title+' '+r.description)}"><div class="card-art">${photo(r)}</div><div class="card-body"><span class="eyebrow">${escape(r.category)}</span><h3>${escape(r.title)}</h3><p>${escape(r.description)}</p><div class="card-meta"><span>${escape(r.time)}</span><span>${escape(t.read)} ↗</span></div></div></a>`).join('');
  const categories=[...new Set(recipes.map(r=>r.category))];
- const home=`<section class="hero"><div class="hero-copy"><p class="eyebrow">ГОТОВИТЬ — В УДОВОЛЬСТВИЕ</p><h1>Хорошая еда.<br>Дома.</h1><p class="intro">Немного вдохновения и понятные рецепты.<br>Всё, чтобы приготовить что-то вкусное.</p><a class="button" href="#recipes">Найти свой рецепт <span>↗</span></a><div class="hero-bottom"><span class="little-line"></span> На каждый день и особый случай</div></div><a class="hero-feature" href="/recipes/pink-cloud/"><img src="/images/pink-cloud.webp" alt="Торт с клубникой и малиной — вариант подачи" width="1536" height="1024" fetchpriority="high"><div class="feature-caption"><div><span class="eyebrow">РЕЦЕПТ ДЛЯ ВДОХНОВЕНИЯ</span><h2>Розовое облако</h2></div><span class="round-arrow" aria-hidden="true">↗</span></div></a></section><section id="recipes"><div class="section-heading"><div><p class="eyebrow">СОХРАНЯЙТЕ. ГОТОВЬТЕ. ДЕЛИТЕСЬ.</p><h2>Что приготовим?</h2></div><span>${recipes.length} рецепта в коллекции</span></div><div class="filters" hidden><div class="chips"><button class="chip active" data-filter="" aria-pressed="true">Все рецепты</button>${categories.map(c=>`<button class="chip" data-filter="${escape(c)}" aria-pressed="false">${escape(c)}</button>`).join('')}</div><label class="search"><span class="sr-only">Поиск рецептов</span><input type="search" placeholder="Найти что-нибудь вкусное…" id="search"></label></div><div class="cards">${cards}</div><p id="empty" role="status" hidden>Ничего не нашлось. Попробуйте другое название или категорию.</p></section>`;
- await writeFile(path.join(out,'index.html'),render('Просто вкусно · Домашние рецепты','Любимые домашние рецепты: торты, салаты и блюда на каждый день.',site+'/',home));
- for(const r of recipes){const dir=path.join(out,'recipes',r.slug);await mkdir(dir,{recursive:true});const content=`<a class="back" href="/#recipes">← Все рецепты</a><article class="recipe"><header class="recipe-heading"><p class="eyebrow">${escape(r.category)}</p><h1>${escape(r.title)}</h1><p class="intro">${escape(r.description)}</p><div class="recipe-meta"><span>◷ ${escape(r.time)}</span><span>Порции: ${escape(r.servings)}</span></div><div class="actions" hidden><button id="share">Поделиться ↗</button><button id="print">Распечатать</button></div><p id="share-status" role="status"></p></header><figure class="recipe-photo">${photo(r)}</figure><div class="recipe-content">${markdown(r.body)}</div></article>`;await writeFile(path.join(dir,'index.html'),render(r.title+' · Домашние рецепты',r.description,site+'/recipes/'+r.slug+'/',content));}
- await writeFile(path.join(out,'404.html'),render('Рецепт не найден','Этой страницы нет.',site+'/',`<section class="hero"><div><h1>Кажется, здесь<br>пока пусто.</h1><p>Вернёмся к рецептам?</p><a class="button" href="/">Открыть книгу рецептов</a></div></section>`));
- await writeFile(path.join(out,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+['/',...recipes.map(r=>'/recipes/'+r.slug+'/')].map(p=>`<url><loc>${escape(site+p)}</loc></url>`).join('')+'</urlset>');
+ const cake=recipes.find(r=>r.slug==='pink-cloud');
+ const feature=cake?`<a class="hero-feature" href="${route(lang,cake.slug)}"><img src="${escape(cake.image)}" alt="${escape(cake.title+' — '+t.serving)}" width="1536" height="1024" fetchpriority="high"><div class="feature-caption"><div><span class="eyebrow">${escape(t.featured)}</span><h2>${escape(cake.title)}</h2></div><span class="round-arrow" aria-hidden="true">↗</span></div></a>`:'';
+ const content=`<section class="hero"><div class="hero-copy"><p class="eyebrow">${escape(t.kicker)}</p><h1>${lines(t.headline)}</h1><p class="intro">${lines(t.intro)}</p><a class="button" href="#recipes">${escape(t.choose)} <span>↗</span></a><div class="hero-bottom"><span class="little-line"></span>${escape(t.occasion)}</div></div>${feature}</section><section id="recipes"><div class="section-heading"><div><p class="eyebrow">${escape(t.collection)}</p><h2>${escape(t.question)}</h2></div><span>${escape(t.count)} ${recipes.length}</span></div><div class="filters" hidden><div class="chips"><button class="chip active" data-filter="" aria-pressed="true">${escape(t.all)}</button>${categories.map(c=>`<button class="chip" data-filter="${escape(c)}" aria-pressed="false">${escape(c)}</button>`).join('')}</div><label class="search"><span class="sr-only">${escape(t.search)}</span><input type="search" placeholder="${escape(t.placeholder)}" id="search"></label></div><div class="cards">${cards}</div><p id="empty" role="status" hidden>${escape(t.empty)}</p></section>`;
+ await save(base.slice(1)+'/index.html',render(t.homeTitle,t.homeDescription,null,content));urls.push(home);
+ for(const r of recipes){
+  const content=`<a class="back" href="${home}#recipes">← ${escape(t.all)}</a><article class="recipe"><header class="recipe-heading"><p class="eyebrow">${escape(r.category)}</p><h1>${escape(r.title)}</h1><p class="intro">${escape(r.description)}</p><div class="recipe-meta"><span>◷ ${escape(r.time)}</span><span>${escape(t.servings)}: ${escape(r.servings)}</span></div><div class="actions" hidden><button id="share" data-copied="${escape(t.copied)}" data-fallback="${escape(t.copyFallback)}">${escape(t.share)} ↗</button><button id="print">${escape(t.print)}</button></div><p id="share-status" role="status"></p></header><figure class="recipe-photo">${photo(r)}</figure><div class="recipe-content">${markdown(r.body)}</div></article>`;
+  await save(route(lang,r.slug).slice(1)+'index.html',render(r.title+' · '+t.recipeSuffix,r.description,r.slug,content));urls.push(route(lang,r.slug));
+ }
+ await save(base.slice(1)+'/404.html',render(t.notFound,t.missing,null,`<section class="hero"><div class="hero-copy"><h1>${lines(t.missingHeading)}</h1><p>${escape(t.backQuestion)}</p><a class="button" href="${home}">${escape(t.openBook)}</a></div></section>`,true));
+ }
+ await writeFile(path.join(out,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls.map(p=>`<url><loc>${escape(site+p)}</loc></url>`).join('')+'</urlset>');
  await writeFile(path.join(out,'robots.txt'),`User-agent: *\nAllow: /\nSitemap: ${site}/sitemap.xml\n`);
- console.log(`Built ${recipes.length} recipes in dist/`);
+ console.log(`Built ${files.length} recipes in 3 languages in dist/`);
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)) await build();
