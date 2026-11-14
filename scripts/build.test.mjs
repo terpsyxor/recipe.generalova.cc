@@ -11,7 +11,7 @@ test('All localized pages, assets and equivalent language links resolve',async()
  for(const [lang,c] of Object.entries(languages)){
   const prefix=c.prefix.slice(1);const local=p=>(prefix?prefix+'/':'')+p;
   const home=await readFile(new URL(local('index.html'),root),'utf8');
-  assert.equal((home.match(/class="card tone-/g)||[]).length,4);
+  assert.equal((home.match(/class="card tone-/g)||[]).length,slugs.length);
   for(const slug of [null,...slugs]){
    const p=local(slug?'recipes/'+slug+'/index.html':'index.html');
    const html=await readFile(new URL(p,root),'utf8');
@@ -31,5 +31,5 @@ test('All localized pages, assets and equivalent language links resolve',async()
   const error=await readFile(new URL(local('404.html'),root),'utf8');assert.ok(error.includes(translations[lang].notFound));
   const cake=await readFile(new URL(local('recipes/pink-cloud/index.html'),root),'utf8');assert.ok(cake.includes('170 °C'));assert.ok(cake.includes('30–35'));
  }
- const map=await readFile(new URL('sitemap.xml',root),'utf8');assert.equal((map.match(/<loc>/g)||[]).length,15);
+ const map=await readFile(new URL('sitemap.xml',root),'utf8');assert.equal((map.match(/<loc>/g)||[]).length,(slugs.length+1)*Object.keys(languages).length);
 });
