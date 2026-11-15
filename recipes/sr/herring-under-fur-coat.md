@@ -24,10 +24,19 @@ Osnovna domaća verzija sa jajima. Koristi činiju za salatu ili obruč prečnik
 Krompir i šargarepu skuvaj u ljusci dok ne omekšaju: oko 20–30 minuta od ključanja, u zavisnosti od veličine. Cveklu kuvaj odvojeno 45–90 minuta, proveravajući nožem da li je omekšala. Jaja kuvaj 10 minuta od ključanja. Sve potpuno ohladi i oljušti.
 
 ### 2. Pripremi sastojke za slojeve
-Proveri da u haringi nema preostalih kostiju i iseci je na male kockice. Sitno iseckaj crni luk. Ako je previše ljut, prelij ga ključalom vodom na 30 sekundi, zatim procedi i ohladi. Povrće i jaja narendaj na krupno, svaku namirnicu odvojeno.
+Proveri da u haringi nema preostalih kostiju i iseci je na male kockice. Sitno iseckaj crni luk, prelij ga ključalom vodom i ostavi 30 sekundi, pa procedi kroz sito. Pusti da se dobro ocedi, ohladi ga i prosuši kuhinjskim ubrusom: salati nije potrebna dodatna voda. Povrće i jaja narendaj na krupno, svaku namirnicu odvojeno. Veoma sočnu cveklu blago ocedi.
 
 ### 3. Složi salatu
-Ređaj slojeve ovim redom: krompir, haringa, crni luk, šargarepa, jaja i cvekla. Krompir, šargarepu, jaja i cveklu premaži tankim slojem majoneza. Povrće možeš blago posoliti, ali prvo probaj haringu jer je već slana.
+Slaži salatu odozdo nagore. Svaku namirnicu rasporedi u jednom sloju preko cele površine, bez jakog pritiskanja. Majonez unapred podeli na otprilike četiri dela — za krompir, šargarepu, jaja i cveklu.
+
+1. **Krompir.** Na dno rasporedi sav narendani krompir i poravnaj. Prvo probaj haringu: ako nije mnogo slana, krompir možeš blago posoliti; ako je slana, nemoj dodavati so. Premaži krompir tankim slojem majoneza.
+2. **Haringa.** Preko krompira premazanog majonezom ravnomerno rasporedi svu iseckanu haringu. Ovaj sloj nemoj soliti niti premazivati majonezom.
+3. **Crni luk.** Preko haringe rasporedi luk koji je preliven ključalom vodom, ohlađen i prosušen. Ovaj sloj nemoj soliti niti premazivati majonezom.
+4. **Šargarepa.** Preko luka rasporedi svu narendanu šargarepu, poravnaj i premaži tankim slojem majoneza. Dodatna so nije potrebna.
+5. **Jaja.** Preko šargarepe premazane majonezom rasporedi sva narendana jaja. Poravnaj i premaži tankim slojem majoneza. Nemoj soliti.
+6. **Cvekla.** Na kraju rasporedi svu narendanu cveklu, poravnaj i premaži preostalim majonezom u tankom, ravnomernom sloju. Nemoj soliti.
+
+Majonez je najlakše naneti u obliku tanke mrežice, pa ga pažljivo rasporediti kašikom bez mešanja slojeva. U ovoj verziji svaki sloj se stavlja samo jednom.
 
 ### 4. Ohladi
 Pokrij salatu i ostavi u frižideru najmanje 4 sata, a najbolje preko noći. Ako koristiš obruč, skini ga neposredno pre serviranja.
