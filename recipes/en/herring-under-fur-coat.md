@@ -24,10 +24,19 @@ A simple homemade version with eggs. Use a salad bowl or an 18–20 cm cake ring
 Boil the unpeeled potatoes and carrots until tender, about 20–30 minutes after the water comes to the boil, depending on their size. Cook the beetroot separately for 45–90 minutes, testing with a knife. Boil the eggs for 10 minutes after the water comes to the boil. Cool everything completely and peel.
 
 ### 2. Prepare the layers
-Check the herring for any remaining bones and cut into small cubes. Finely chop the onion. If it is too sharp, cover with boiling water for 30 seconds, drain through a sieve and cool. Coarsely grate the vegetables and eggs, keeping each ingredient separate.
+Check the herring for any remaining bones and cut into small cubes. Finely chop the onion, cover with boiling water for 30 seconds, then drain through a sieve. Let all the water drain away, cool the onion and pat dry with kitchen paper: the salad does not need extra moisture. Coarsely grate the vegetables and eggs separately. Gently squeeze very juicy beetroot.
 
 ### 3. Assemble the salad
-Layer the ingredients in this order: potatoes, herring, onion, carrots, eggs and beetroot. Spread a thin layer of mayonnaise over the potatoes, carrots, eggs and beetroot. You can lightly salt the vegetables, but taste the herring first: it is already salty.
+Build the salad from the bottom up. Use each ingredient in a single layer, spreading it evenly over the surface without pressing firmly. Divide the mayonnaise into roughly four portions for the potatoes, carrots, eggs and beetroot.
+
+1. **Potatoes.** Spread all the grated potatoes over the bottom and level gently. Taste the herring first: if it is only lightly salted, you may add a little salt to the potatoes; if it is salty, add none. Spread a thin layer of mayonnaise over the potatoes.
+2. **Herring.** Spread all the diced herring evenly over the mayonnaise-covered potatoes. Do not add salt or mayonnaise to this layer.
+3. **Onion.** Spread the scalded, cooled and dried onion over the herring. Do not add salt or mayonnaise to this layer.
+4. **Carrots.** Spread all the grated carrots over the onion, level gently and cover with a thin layer of mayonnaise. No extra salt is needed.
+5. **Eggs.** Spread all the grated eggs over the mayonnaise-covered carrots. Level gently and cover with a thin layer of mayonnaise. Do not add salt.
+6. **Beetroot.** Finish with all the grated beetroot, level gently and cover with the remaining mayonnaise in a thin, even layer. Do not add salt.
+
+For easy spreading, drizzle the mayonnaise in a fine lattice, then gently spread it with a spoon without mixing the layers. Each layer is used once in this version.
 
 ### 4. Chill
 Cover and refrigerate for at least 4 hours, preferably overnight. If using a cake ring, remove it just before serving.
